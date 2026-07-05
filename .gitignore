@@ -1,0 +1,32 @@
+# Data (large files, symlinks)
+data/*.tsv
+data/pathways/
+data/*.parquet
+
+# Results (huge)
+results/
+results_PRE_ASSOC_FIX/
+results_msc/
+
+# Logs
+*.log
+slurm-*.out
+jupyterhub_slurmspawner_*.log
+
+# Backups
+*.bak
+*.bak_*
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large git-inappropriate files
+*.pt
+*.HIDDEN
+*.REAL_BACKUP
