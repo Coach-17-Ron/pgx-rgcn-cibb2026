@@ -30,3 +30,7 @@ Thumbs.db
 *.pt
 *.HIDDEN
 *.REAL_BACKUP
+
+# Notebooks
+*.ipynb
+.ipynb_checkpoints/
