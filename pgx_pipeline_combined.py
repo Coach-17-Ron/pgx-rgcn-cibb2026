@@ -1102,8 +1102,44 @@ def run_stage_02_train(cfg, paths, logger, args, device):
                 f"{num_edge_types} relation types")
 
     # --- Supervised positives + negative sampler setup ---
-    dg_positives = train_edges[train_edges["is_dg_positive"] == True].reset_index(drop=True)
-    logger.info(f"Supervised positive drug-gene edges: {len(dg_positives)}")
+    # D1: apply supervision regime (default | ambig_as_pos | nonassoc_excluded)
+    regime = getattr(args, "supervision_regime", "default")
+    logger.info(f"Supervision regime: {regime}")
+
+    if regime == "default":
+        # CIBB baseline: only is_dg_positive=True as supervised positives
+        dg_positives = train_edges[
+            train_edges["is_dg_positive"] == True
+        ].reset_index(drop=True)
+        n_extras = 0
+
+    elif regime == "ambig_as_pos":
+        # Merge ambiguous edges into positives (treat as noisy positives)
+        dg_positives = train_edges[
+            (train_edges["is_dg_positive"] == True) |
+            (train_edges["is_dg_ambiguous"] == True)
+        ].reset_index(drop=True)
+        n_ambig = int((train_edges["is_dg_ambiguous"] == True).sum())
+        n_extras = n_ambig
+        logger.info(f"Ambiguous edges merged into positives: {n_ambig} extras")
+
+    elif regime == "nonassoc_excluded":
+        # Drop not-associated edges from training graph entirely
+        n_nonassoc = int((train_edges["is_dg_negative"] == True).sum())
+        train_edges = train_edges[
+            train_edges["is_dg_negative"] != True
+        ].reset_index(drop=True)
+        dg_positives = train_edges[
+            train_edges["is_dg_positive"] == True
+        ].reset_index(drop=True)
+        n_extras = -n_nonassoc
+        logger.info(f"Not-associated edges dropped from graph: {n_nonassoc} removed")
+
+    else:
+        raise ValueError(f"Unknown supervision_regime: {regime}")
+
+    logger.info(f"Supervised positive drug-gene edges: {len(dg_positives)} "
+                f"(regime={regime}, extras={n_extras})")
 
     gene_degrees = dg_positives["target_hetero_id"].value_counts()
     degree_smoothed = gene_degrees.astype(float) ** 0.75
@@ -3666,6 +3702,14 @@ def parse_args():
     p.add_argument("--hub_penalty_beta", type=float, default=None,
                    help="Override CONFIG.training.hub_penalty_beta. "
                         "Use to sweep ablations (0, 0.001, 0.005, 0.01).")
+    p.add_argument("--supervision_regime",
+                   default="default",
+                   choices=["default", "ambig_as_pos", "nonassoc_excluded"],
+                   help="How to handle ambiguous and not-associated drug-gene "
+                        "pairs in supervised loss. "
+                        "'default': CIBB baseline. "
+                        "'ambig_as_pos': ambiguous merged into positives. "
+                        "'nonassoc_excluded': not-associated dropped from graph.")
     p.add_argument("--split_mode", default=None,
                    choices=["dg_context", "strict_cold_drug"],
                    help="Override CONFIG.split.split_mode. "
@@ -3715,13 +3759,18 @@ def main():
         beta_tag = f"beta{beta}".replace(".", "p").replace("-", "neg")
         split_tag = cfg["split"].get("split_mode", "dg_context")
         seed_tag = f"seed{cfg['seed']}"
+        # D1: include supervision regime in RUN_ID for organised sweep folders
+        regime_tag = f"reg-{args.supervision_regime}"
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        cfg["run_id"] = f"{ts}_{split_tag}_{beta_tag}_{seed_tag}"
+        cfg["run_id"] = f"{ts}_{split_tag}_{beta_tag}_{seed_tag}_{regime_tag}"
 
     # Set up paths and seed
     paths = setup_paths(cfg, args.run_id)
     seed_everything(cfg["seed"])
 
+    # D1: bake supervision_regime into the training config for permanent record
+    cfg["training"]["supervision_regime"] = args.supervision_regime
+    
     # Snapshot the complete resolved config to the run folder (every CLI
     # override is now baked in; this is the single source of truth for what
     # this run did)
