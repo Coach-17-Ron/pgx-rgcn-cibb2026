@@ -145,3 +145,30 @@ Most Part-A commitments already implemented in the CIBB code:
 - Bordes et al. 2013 (TransE): confirm cite in Part B methods for 
   degree-aware sampling
 - Verify all pathway_enrichment.parquet files from CIBB runs
+
+### Week 2 Day 1 (Jul 7): D1 code and first experiments
+
+**Code changes committed:**
+- --supervision_regime flag added (default | ambig_as_pos | nonassoc_excluded)
+- 4 code changes: parse_args, RUN_ID generation, run_config saving, dg_positives branching
+- Syntax verified, git commit 2650896 on d1-supervision-regime branch
+
+**Experiments run (seed=42, β=0.10, no fingerprints, dg_context split):**
+| Regime            | Filt MRR | Baseline | Val MRR (best) |
+|-------------------|----------|----------|----------------|
+| default           | 0.0779   | 0.0795   | 0.0705         |
+| ambig_as_pos (r1) | 0.0763   | 0.0795   | 0.0599         |
+| ambig_as_pos (r2) | 0.0881   | 0.0795   | 0.0769         |
+| nonassoc_excluded | 0.0684   | 0.0795   | 0.0724         |
+
+**Key observations:**
+1. Duplicate ambig_as_pos runs differ by ±0.012 MRR (~15% relative).
+   Confirms substantial CPU multi-threading non-determinism.
+2. Single-seed regime comparisons cannot be trusted.
+3. Simultaneous parallel jobs may cause PyG JIT cache contention 
+   (job 210509 failed with this error).
+
+**Decision:**
+- Multi-seed replication essential for D1 (seeds 42, 123, 2026 x 3 regimes = 9 runs)
+- Submit sequentially, not in parallel
+- Next: Wednesday July 8, multi-seed submission
