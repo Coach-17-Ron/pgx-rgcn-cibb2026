@@ -172,3 +172,26 @@ Most Part-A commitments already implemented in the CIBB code:
 - Multi-seed replication essential for D1 (seeds 42, 123, 2026 x 3 regimes = 9 runs)
 - Submit sequentially, not in parallel
 - Next: Wednesday July 8, multi-seed submission
+
+### Week 2 Day 2 (Jul 8): D1 complete + D2 launched
+
+**D1 wrapped:**
+- Multi-seed replication complete (9 runs across seeds 42/123/2026, 3 regimes)
+- Analysis: regime choice NOT distinguishable within seed variance
+- Filtered MRR: default 0.090±0.020 | ambig_as_pos 0.083±0.013 | nonassoc 0.084±0.010
+- Baseline (across seeds): 0.088
+- Merged d1-supervision-regime → msc-extensions
+- Findings summary: d1_results_summary.md
+
+**Secondary D1 finding:** Curator-facing recommendations differ dramatically 
+across regimes despite equivalent MRR. Ambig_as_pos: 90% upgrade. 
+Nonassoc_excluded: 74% downgrade. Worth reporting in Part B discussion.
+
+**Tertiary D1 finding:** Drugs with SMILES score 3x higher across all regimes 
+(0.09-0.11 vs 0.03-0.04). Persistent pattern; independent of supervision.
+
+**D2 launched:**
+- Job submitted to test --ablation_beta_zero at 3 seeds
+- Comparison: β=0.10 (existing D1 default runs) vs β=0.0 (new D2 runs)
+- Expected completion: ~75 min sequential
+- Hypothesis: hub penalty has no effect (degree-aware sampling does the work)
