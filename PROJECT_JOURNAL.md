@@ -195,3 +195,26 @@ Nonassoc_excluded: 74% downgrade. Worth reporting in Part B discussion.
 - Comparison: β=0.10 (existing D1 default runs) vs β=0.0 (new D2 runs)
 - Expected completion: ~75 min sequential
 - Hypothesis: hub penalty has no effect (degree-aware sampling does the work)
+
+### Week 2 Day 4 (Jul 10 early morning): D3 complete
+
+**D3 wrapped:**
+- New evaluation function evaluate_d3_phenotype_relevant.py (~470 lines)
+- Debugged and fixed 3 issues: config key names, checkpoint key ('model_state' 
+  not 'model_state_dict'), and double-offset bug on global gene IDs
+- Ran across all 12 configurations from D1+D2 in ~3 minutes
+- Analysis: model matches GP baseline, slightly below DG baseline
+- Model filt MRR range: 0.093-0.101 across 12 configs
+- Pattern: consistent baseline-level performance, regime/β insensitive
+- Findings summary: d3_results_summary.md
+- Draft methods: writing/d3_methods_draft.md
+
+**Combined D1+D2+D3 finding:**
+Model performance is approximately baseline-level across all evaluation 
+slices tested (all-genes, phenotype-relevant subset), and insensitive to 
+supervision regime and hub-penalty variations. Improvement must come from 
+methodological changes beyond these dimensions.
+
+**Next:**
+- D5 pathway enrichment + literature validation starting Monday 13 July
+- Weekend rest
