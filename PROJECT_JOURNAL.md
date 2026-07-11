@@ -246,3 +246,34 @@ substantive claim for Part B.
 **Next:**
 - D5 pathway enrichment (~3 hours compute) + literature validation
 - Starting Sunday or Monday
+
+### Week 2 Day 6 (Jul 11 late evening): D5-Part 2 complete
+
+**D5-Part 2 wrapped:**
+- Downloaded Reactome (2,868 pathways) + KEGG_MEDICUS (658) via MSigDB
+- Total 3,689 gene sets tested per config (with PharmGKB 163)
+- Ran Stage 5 pathway ORA across all 12 D1/D2 configurations
+- Job 243230 completed in 3:27 (~15 sec per config)
+- All configs produce 42-64 FDR-significant pathways
+- 43 pathways significant in ≥6/12 configs (majority-robust)
+- 10 PharmGKB drug pathways significant in ALL 12 configs
+- Findings summary: d5_part2_pathway_summary.md
+- Draft methods: writing/d5_part2_methods_draft.md
+
+**SUBSTANTIVE POSITIVE FINDING:**
+Model's top predictions ARE biologically coherent under BH-FDR correction:
+- REACTOME "Biological oxidations" (master drug metabolism pathway) significant
+- Ten drug-specific PGx pathways significant across ALL configs
+- Anti-cancer (Etoposide, Taxane, Erlotinib), CNS (Paroxetine), 
+  immunosuppressants (Tacrolimus/Cyclosporine), CYP substrates (Verapamil)
+
+**Combined narrative with D1/D2/D3/D4:**
+- Aggregate MRR is baseline-level everywhere
+- Chemical structure (SMILES) drives per-edge ranking performance
+- Model's biological signal emerges at the pathway level, independent of 
+  chemical structure
+- Model is suitable for hypothesis generation and curator triage
+
+**Next:**
+- D5-Part 1 literature validation (tomorrow morning, Sunday July 12)
+- Then Part B writing phase can begin
