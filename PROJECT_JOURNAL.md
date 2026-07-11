@@ -218,3 +218,31 @@ methodological changes beyond these dimensions.
 **Next:**
 - D5 pathway enrichment + literature validation starting Monday 13 July
 - Weekend rest
+
+### Week 2 Day 5 (Jul 10 late evening): D4 complete
+
+**D4 wrapped:**
+- Analytical study using existing test_metrics.json across all 12 configs
+- No new compute needed (~1 second analysis)
+- D4.1 (filtered vs raw gap): +0.012 MRR consistent across configs
+- D4.3 (SMILES stratification): SMILES availability = +0.065 MRR gap
+- D4.2 (per-drug binning): deferred, needs rescoring, not critical for MSc
+- Analysis script: analyse_d4_raw_filtered.py
+- Findings summary: d4_results_summary.md
+- Draft methods: writing/d4_methods_draft.md
+
+**KEY FINDING FOR MSC:**
+Chemical structure availability drives performance ~5.5× more than any 
+methodological choice tested. Cold-drug ranking improvements should focus 
+on expanding SMILES coverage or developing structure-free representations 
+for uncharacterised drugs, not on refining label handling, loss architecture, 
+or evaluation protocol.
+
+**Cross-deliverable pattern established:**
+Model performance is baseline-level everywhere (D1, D2, D3) except when 
+stratified by chemical structure availability (D4). This is the primary 
+substantive claim for Part B.
+
+**Next:**
+- D5 pathway enrichment (~3 hours compute) + literature validation
+- Starting Sunday or Monday
