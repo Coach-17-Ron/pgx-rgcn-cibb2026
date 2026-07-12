@@ -36,6 +36,9 @@ def parse_args():
                    help="Email for NCBI Entrez / EuroPMC")
     p.add_argument("--top_n", type=int, default=None,
                    help="Override number of top predictions to contextualise")
+    p.add_argument("--max_pairs", type=int, default=None,
+                   help="Override cfg contextualisation.literature.max_pairs_to_query "
+                        "(default: 50 from config)")
     return p.parse_args()
 
 
@@ -65,6 +68,8 @@ def main():
     logger.info(f"Existing run: {run_dir}")
     logger.info(f"pathway_only: {cli_args.pathway_only}")
     logger.info(f"pubmed_email: {cli_args.pubmed_email}")
+    if cli_args.max_pairs is not None:
+        logger.info(f"max_pairs override: {cli_args.max_pairs}")
     
     novel_path = paths["artifacts_dir"] / "novel_predictions.parquet"
     nodes_path = paths["artifacts_dir"] / "nodes.parquet"
@@ -85,6 +90,13 @@ def main():
     # Override pubmed_email in cfg if provided
     if "contextualisation" in cfg and "literature" in cfg["contextualisation"]:
         cfg["contextualisation"]["literature"]["pubmed_email"] = cli_args.pubmed_email
+        if cli_args.max_pairs is not None:
+            cfg["contextualisation"]["literature"]["max_pairs_to_query"] = cli_args.max_pairs
+            logger_msg = f"max_pairs_to_query overridden to {cli_args.max_pairs}"
+        else:
+            logger_msg = f"max_pairs_to_query using config default"
+    else:
+        logger_msg = "no contextualisation.literature in cfg"
     
     logger.info("Starting Stage 5...")
     run_stage_05_contextualise(cfg, paths, logger, stage5_args)

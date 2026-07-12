@@ -277,3 +277,39 @@ Model's top predictions ARE biologically coherent under BH-FDR correction:
 **Next:**
 - D5-Part 1 literature validation (tomorrow morning, Sunday July 12)
 - Then Part B writing phase can begin
+
+### Week 2 Day 7 (Jul 12 Sun evening 21:35): D5-Part 1 complete
+
+**D5-Part 1 wrapped:**
+- Modified run_d5_stage5.py to accept --max_pairs CLI flag
+- Ran Stage 5 with max_pairs=500 on reference config
+- 500 queries × 21 unique test drugs
+- 39 pairs (7.8%) had 2020-2026 PubMed literature support
+- 97 total articles retrieved
+- Biologically-plausible literature-supported predictions include:
+  * carbidopa → COMT (Parkinson's, 10 articles)
+  * dimethyl fumarate → FOXP3 (Multiple sclerosis, 7 articles)
+  * doxorubicinol → ABCB1 (chemotherapy resistance, 3 articles)
+  * doxorubicinol → CBR3 (doxorubicin metabolism, 2 articles)
+  * sodium nitrite → TNF, IL10 (nitrite-nitrate biology)
+  * fludarabine → NQO1 (leukemia treatment metabolism)
+
+**Findings summary:** d5_part1_literature_summary.md
+**Draft methods:** writing/d5_part1_methods_draft.md
+
+## ALL 5 MSC DELIVERABLES COMPLETE
+
+- D1 ✅ Multi-seed supervision sensitivity (no effect)
+- D2 ✅ β=0 hub-penalty ablation (no effect)
+- D3 ✅ Phenotype-relevant gene ranking (baseline-level)
+- D4 ✅ Raw vs filtered + SMILES stratification (chemical structure dominates)
+- D5-Part 1 ✅ Literature validation (7.8% of top predictions supported)
+- D5-Part 2 ✅ Pathway enrichment (10 PGx pathways sig in ALL 12 configs)
+
+**Original schedule:** all deliverables by end of August 2026.
+**Actual:** all deliverables complete by 12 July 2026 Sunday evening.
+**Ahead of schedule:** ~6-7 weeks.
+**Buffer for Part B writing:** August through October + supervisor review 
+November + submission December.
+
+**Part B writing phase can begin whenever ready.**
