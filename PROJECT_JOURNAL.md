@@ -313,3 +313,27 @@ Model's top predictions ARE biologically coherent under BH-FDR correction:
 November + submission December.
 
 **Part B writing phase can begin whenever ready.**
+
+### Week 3 Day 4 (Jul 16 evening 22:10): D5-Part 1 EXPANDED complete
+
+**Expanded D5-Part 1 finding (replaces initial run):**
+- Modified run_d5_stage5.py to accept --date_from and --date_to CLI flags
+- Submitted sbatch job 277106 with max_pairs=5000, date_from=1990, date_to=2026
+- Job completed 06:33 SAST 16 July, elapsed 2h18min
+- **Coverage: 4,636 pairs across 190 unique test drugs (25% of test set)**
+- **Support rate: 17.5% (up from 7.8%)** — 811 pairs with articles
+- **Total articles: 3,505 (from 97 in initial run)**
+- 45% of supporting articles pre-date 2020 → wider date range was essential
+
+**Positive but nuanced:**
+- Genuine PGx supported pairs: heroin→ANKK1, canakinumab→IL1B, etoposide→ABCC1
+- Name-match inflated pairs: calcium/testosterone → many genes (broad biology)
+- 17.5% is a mixed signal; canonical pharma subset would give lower but 
+  cleaner rate
+
+**Files updated:**
+- d5_part1_literature_summary.md — reports both runs, honest interpretation
+- writing/d5_part1_methods_draft.md — updated methodology for Part B
+
+**Path B Session 2 complete. Sessions 1 (Stage 4 interpretability) and 3 
+(null enrichment) remaining before writing phase.**
